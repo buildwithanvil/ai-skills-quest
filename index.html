@@ -641,6 +641,28 @@
         a { color: var(--accent-blue); text-decoration: none; }
         a:hover { text-decoration: underline; }
 
+        /* COURSE LINK */
+        .course-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: #4a9eff22;
+            border: 1px solid #4a9eff44;
+            border-radius: 6px;
+            color: var(--accent-blue);
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.2s;
+        }
+        .course-link:hover {
+            background: #4a9eff33;
+            border-color: var(--accent-blue);
+            text-decoration: none;
+        }
+
         /* EXPAND ARROW */
         .expand-arrow {
             color: var(--text-dim);
@@ -813,6 +835,7 @@
                         <span>FOUNDATIONAL</span>
                     </div>
                     <div class="course-desc">Core features, basic prompting, everyday use cases. The starting line.</div>
+                    <a href="https://anthropic.skilljar.com/claude-101" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-blue" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Watch all lectures (skip nothing, take zero notes)</div><div class="mission-type watch">WATCH</div></div>
@@ -833,6 +856,7 @@
                         <span>1 QUIZ</span>
                     </div>
                     <div class="course-desc">The 4D Framework: Delegation, Description, Discernment, Diligence. This is the operating system for thinking about AI. Don't skip this because it sounds soft. It's not.</div>
+                    <a href="https://anthropic.skilljar.com/ai-fluency-framework-foundations" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-blue" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Watch lectures 1-7 (Session A: 30 min max)</div><div class="mission-type watch">WATCH</div></div>
@@ -868,6 +892,7 @@
                         <span>1 QUIZ</span>
                     </div>
                     <div class="course-desc">This is where it gets real. Learn Claude Code: the command line AI that reads files, writes code, runs commands. You don't need to know how to code. You need to know how to direct an AI that codes.</div>
+                    <a href="https://anthropic.skilljar.com/claude-code-in-action" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-green" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Install Claude Code on your machine (follow setup guide)</div><div class="mission-type build">BUILD</div></div>
@@ -891,6 +916,7 @@
                         <span>HANDS-ON</span>
                     </div>
                     <div class="course-desc">Jupyter notebooks from Anthropic's GitHub. Step-by-step prompting techniques with live exercises. Run the code. Change the inputs. See what happens.</div>
+                    <a href="https://github.com/anthropics/courses" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-green" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Clone the repo and set up your environment (Claude Code can help)</div><div class="mission-type build">BUILD</div></div>
@@ -925,6 +951,7 @@
                         <span>ENGINEERING</span>
                     </div>
                     <div class="course-desc">Build reusable Skills in Claude Code. Think of it like crafting a tool in Minecraft that you can use over and over. You make it once, Claude uses it every time the right task comes up.</div>
+                    <a href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-orange" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Watch all 6 lectures (one sitting, 30 min)</div><div class="mission-type watch">WATCH</div></div>
@@ -946,6 +973,7 @@
                         <span>~3 HRS SELECTED</span>
                     </div>
                     <div class="course-desc">You don't need all 84 lectures. Hit these modules: API Setup, Multi-turn Conversations, Tool Use, and Agents. Skip the deep ML theory. You're building, not researching.</div>
+                    <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-orange" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Module: API Setup + First Call (20 min)</div><div class="mission-type watch">WATCH</div></div>
@@ -969,6 +997,7 @@
                         <span>APPLIED</span>
                     </div>
                     <div class="course-desc">Take the prompting techniques and apply them to complex, messy, real problems. This is the jump from practice range to live fire.</div>
+                    <a href="https://github.com/anthropics/courses/tree/master/real_world_prompting" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-orange" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Work through all notebooks (break into 20 min sessions)</div><div class="mission-type build">BUILD</div></div>
@@ -1002,6 +1031,7 @@
                         <span>ENGINEERING</span>
                     </div>
                     <div class="course-desc">MCP lets Claude plug into other tools -- databases, APIs, file systems. Think of it like redstone in Minecraft: it connects everything together and makes automation possible.</div>
+                    <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-purple" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Watch all MCP fundamentals lectures (one session)</div><div class="mission-type watch">WATCH</div></div>
@@ -1152,6 +1182,7 @@
                     </div>
                     <div class="course-meta"><span>SKILLJAR</span><span>~30 MIN</span><span>FOUNDATIONAL</span></div>
                     <div class="course-desc">Same starting point as Rio. Core features, prompting basics.</div>
+                    <a href="https://anthropic.skilljar.com/claude-101" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-blue" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete all lectures</div><div class="mission-type watch">WATCH</div></div>
@@ -1168,6 +1199,7 @@
                     </div>
                     <div class="course-meta"><span>SKILLJAR</span><span>5 LECTURES // 30 MIN</span><span>EDUCATION</span></div>
                     <div class="course-desc">Designed for exactly where you are. Covers using AI as a thinking partner vs. a crutch, academic integrity, career planning. This isn't a warning lecture. It's a competitive advantage lecture.</div>
+                    <a href="https://anthropic.skilljar.com/ai-fluency-for-students" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-blue" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete all 5 lectures</div><div class="mission-type watch">WATCH</div></div>
@@ -1184,6 +1216,7 @@
                     </div>
                     <div class="course-meta"><span>SKILLJAR</span><span>14 LECTURES // 1.1 HRS</span><span>1 QUIZ</span></div>
                     <div class="course-desc">The 4D Framework deep dive. Delegation, Description, Discernment, Diligence. Think of these as the four variables in an equation. Master each one, and the outputs improve exponentially.</div>
+                    <a href="https://anthropic.skilljar.com/ai-fluency-framework-foundations" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-blue" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete all 14 lectures (take notes -- your style)</div><div class="mission-type watch">WATCH</div></div>
@@ -1214,6 +1247,7 @@
                     </div>
                     <div class="course-meta"><span>SKILLJAR</span><span>84 LECTURES // 8.1 HRS</span><span>10 QUIZZES</span></div>
                     <div class="course-desc">The heavyweight. Covers everything: API setup, multi-turn, vision, RAG, tool use, agents, streaming, evaluations. Your brother is doing selected modules. You're doing the whole thing. That's your edge.</div>
+                    <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-green" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Lectures 1-20: API Fundamentals + Multi-turn (Session block A)</div><div class="mission-type watch">WATCH</div></div>
@@ -1247,6 +1281,7 @@
                     </div>
                     <div class="course-meta"><span>GITHUB NOTEBOOK</span><span>COMPREHENSIVE</span><span>HANDS-ON</span></div>
                     <div class="course-desc">Jupyter notebooks with live exercises. Every technique builds on the last. Your academic rigor is an asset here -- treat each notebook like a lab.</div>
+                    <a href="https://github.com/anthropics/courses" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-orange" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete all notebooks, modifying examples to test edge cases</div><div class="mission-type build">BUILD</div></div>
@@ -1263,6 +1298,7 @@
                     </div>
                     <div class="course-meta"><span>GITHUB NOTEBOOK</span><span>ADVANCED</span><span>METHODOLOGY</span></div>
                     <div class="course-desc">How to measure whether a prompt actually works. This is the scientific method applied to AI. Hypothesis, test, measure, iterate. Right in your wheelhouse.</div>
+                    <a href="https://github.com/anthropics/courses/tree/master/prompt_evaluations" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-orange" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete all evaluation notebooks</div><div class="mission-type build">BUILD</div></div>
@@ -1291,7 +1327,8 @@
                         <span class="expand-arrow">&#9654;</span>
                     </div>
                     <div class="course-meta"><span>SKILLJAR</span><span>15 LECTURES // 1 HR</span><span>1 QUIZ</span></div>
-                    <div class="course-desc">Your brother did this in Phase 2. You're doing it now because you have the API knowledge to understand what's happening under the hood. Different path, different depth.</div>
+                    <div class="course-desc">Rio did this in Phase 2. You're doing it now because you have the API knowledge to understand what's happening under the hood. Different path, different depth.</div>
+                    <a href="https://anthropic.skilljar.com/claude-code-in-action" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-purple" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Install Claude Code + complete all 15 lectures</div><div class="mission-type watch">WATCH</div></div>
@@ -1308,6 +1345,7 @@
                     </div>
                     <div class="course-meta"><span>SKILLJAR</span><span>6 LECTURES // 30 MIN</span><span>ENGINEERING</span></div>
                     <div class="course-desc">Build reusable Skills. Your academic angle: create Skills for research synthesis, literature review, or data analysis.</div>
+                    <a href="https://anthropic.skilljar.com/introduction-to-agent-skills" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-purple" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete all 6 lectures</div><div class="mission-type watch">WATCH</div></div>
@@ -1323,7 +1361,8 @@
                         <span class="expand-arrow">&#9654;</span>
                     </div>
                     <div class="course-meta"><span>SKILLJAR</span><span>BOTH COURSES</span><span>FULL DEPTH</span></div>
-                    <div class="course-desc">Your brother does Intro MCP only. You do both -- Intro and Advanced. Transport mechanisms, production patterns, sampling. The full picture.</div>
+                    <div class="course-desc">Rio does Intro MCP only. You do both -- Intro and Advanced. Transport mechanisms, production patterns, sampling. The full picture.</div>
+                    <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol" target="_blank" class="course-link" onclick="event.stopPropagation()">Go to Course &rarr;</a>
                     <div class="progress-mini"><div class="progress-mini-fill fill-purple" style="width:0%"></div></div>
                     <div class="course-missions">
                         <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete Intro MCP lectures</div><div class="mission-type watch">WATCH</div></div>
