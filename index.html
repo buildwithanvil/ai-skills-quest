@@ -1,0 +1,1885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Skills Quest // The Anthropic Academy Campaign</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a28;
+            --border: #2a2a3a;
+            --text-primary: #e8e8f0;
+            --text-secondary: #8888a0;
+            --text-dim: #555570;
+            --accent-blue: #4a9eff;
+            --accent-purple: #8b5cf6;
+            --accent-orange: #f59e0b;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-cyan: #06b6d4;
+            --btc-gold: #f7931a;
+            --btc-gold-dim: #f7931a33;
+            --scholar-purple: #a78bfa;
+            --scholar-purple-dim: #a78bfa33;
+            --gap: 16px;
+            --radius: 10px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            padding: 40px 20px 30px;
+            position: relative;
+        }
+        .header h1 {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #4a9eff, #8b5cf6, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .header .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 6px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* PLAYER TABS */
+        .player-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 24px 0;
+        }
+        .player-tab {
+            padding: 12px 32px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .player-tab:hover { border-color: var(--text-dim); }
+        .player-tab.active-son {
+            border-color: var(--btc-gold);
+            color: var(--btc-gold);
+            background: var(--btc-gold-dim);
+        }
+        .player-tab.active-daughter {
+            border-color: var(--scholar-purple);
+            color: var(--scholar-purple);
+            background: var(--scholar-purple-dim);
+        }
+        .player-tab .icon { font-size: 20px; }
+        .player-tab .tag {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+        .player-tab.active-son .tag { background: var(--btc-gold); color: #000; }
+        .player-tab.active-daughter .tag { background: var(--scholar-purple); color: #000; }
+        .both-tab {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .both-tab.active-both {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            background: #10b98122;
+        }
+
+        /* PLAYER PANELS */
+        .player-panel { display: none; }
+        .player-panel.active { display: block; }
+
+        /* STATS ROW */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--gap);
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+        .stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-dim);
+            margin-bottom: 6px;
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .stat-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* BTC GAS TANK */
+        .btc-tank {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .btc-tank-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .btc-tank-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--btc-gold);
+        }
+        .btc-tank-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--btc-gold);
+        }
+        .btc-tank-bar-outer {
+            width: 100%;
+            height: 40px;
+            background: #1a1510;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #3d2d0a;
+        }
+        .btc-tank-bar-inner {
+            height: 100%;
+            background: linear-gradient(90deg, #f7931a, #fbbf24);
+            border-radius: 18px;
+            transition: width 0.8s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+        }
+        .btc-tank-bar-inner::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%, rgba(0,0,0,0.1) 100%);
+            border-radius: 18px;
+        }
+        .btc-tank-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #000;
+            z-index: 1;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .btc-milestones {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            padding: 0 4px;
+        }
+        .btc-milestone {
+            font-size: 10px;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+            text-align: center;
+        }
+        .btc-milestone.reached { color: var(--btc-gold); font-weight: 600; }
+
+        /* SCHOLAR RANK */
+        .scholar-rank {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .scholar-rank-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .scholar-current {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--scholar-purple);
+        }
+        .scholar-next {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .scholar-bar-outer {
+            width: 100%;
+            height: 12px;
+            background: #1a1520;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .scholar-bar-inner {
+            height: 100%;
+            background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+            border-radius: 6px;
+            transition: width 0.8s ease;
+        }
+        .scholar-ranks-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .scholar-rank-item {
+            text-align: center;
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+        }
+        .scholar-rank-item.current { color: var(--scholar-purple); font-weight: 700; }
+        .scholar-rank-item.completed { color: var(--accent-green); }
+
+        /* PHASE CARDS */
+        .phase-section {
+            margin-bottom: 32px;
+        }
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .phase-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .phase-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .phase-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .phase-timeline {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-left: auto;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* COURSE CARDS */
+        .course-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        .course-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .course-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--text-dim);
+            transform: translateY(-1px);
+        }
+        .course-card.locked {
+            opacity: 0.5;
+        }
+        .course-card.locked::after {
+            content: 'LOCKED';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            background: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .course-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        .course-name {
+            font-size: 15px;
+            font-weight: 700;
+            flex: 1;
+        }
+        .course-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 11px;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 10px;
+        }
+        .course-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .course-missions {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+        .course-card.expanded .course-missions { display: block; }
+        .mission-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #1a1a28;
+        }
+        .mission-item:last-child { border-bottom: none; }
+        .mission-check {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 11px;
+        }
+        .mission-check:hover { border-color: var(--accent-green); }
+        .mission-check.done {
+            border-color: var(--accent-green);
+            background: var(--accent-green);
+            color: #000;
+        }
+        .mission-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            flex: 1;
+        }
+        .mission-text.done { text-decoration: line-through; color: var(--text-dim); }
+        .mission-type {
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .mission-type.watch { background: #4a9eff22; color: var(--accent-blue); }
+        .mission-type.build { background: #10b98122; color: var(--accent-green); }
+        .mission-type.compress { background: #f59e0b22; color: var(--accent-orange); }
+        .mission-type.boss { background: #ef444422; color: var(--accent-red); }
+        .mission-type.coop { background: #8b5cf622; color: var(--accent-purple); }
+
+        .course-reward {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .reward-btc {
+            background: var(--btc-gold-dim);
+            color: var(--btc-gold);
+            border: 1px solid #f7931a44;
+        }
+        .reward-scholar {
+            background: var(--scholar-purple-dim);
+            color: var(--scholar-purple);
+            border: 1px solid #a78bfa44;
+        }
+
+        /* SKILL TREE */
+        .skill-tree {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .skill-tree h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .tree-container {
+            position: relative;
+            min-height: 200px;
+        }
+        .tree-node {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: var(--bg-dark);
+            margin: 4px;
+            transition: all 0.3s;
+        }
+        .tree-node.unlocked {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        .tree-node.active {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+            background: #4a9eff11;
+            box-shadow: 0 0 12px #4a9eff22;
+        }
+        .tree-node.locked {
+            opacity: 0.35;
+        }
+        .tree-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .tree-connector {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 16px;
+            margin: 4px 0;
+        }
+
+        /* FORGE (COOP) */
+        .forge-section {
+            background: linear-gradient(135deg, #12121a, #1a1528);
+            border: 1px solid #2a2a4a;
+            border-radius: var(--radius);
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+        .forge-title {
+            font-size: 22px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+        .forge-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+        .forge-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+        .forge-player {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+        .forge-player-name {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .forge-player-role {
+            font-size: 11px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .forge-task {
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding: 6px 0;
+            border-bottom: 1px solid #1a1a28;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .forge-task:last-child { border-bottom: none; }
+        .forge-connector {
+            font-size: 32px;
+            color: var(--accent-green);
+            text-align: center;
+            font-weight: 900;
+        }
+
+        /* RULES SECTION */
+        .rules-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .rules-section h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+        .rule-item {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #1a1a28;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .rule-item:last-child { border-bottom: none; }
+        .rule-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--text-dim);
+            flex-shrink: 0;
+            width: 24px;
+        }
+
+        /* CHART SECTION */
+        .chart-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--gap);
+            margin-bottom: 24px;
+        }
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+        .chart-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        .chart-card canvas { max-height: 250px; }
+
+        /* LINK */
+        a { color: var(--accent-blue); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* EXPAND ARROW */
+        .expand-arrow {
+            color: var(--text-dim);
+            font-size: 12px;
+            transition: transform 0.3s;
+            flex-shrink: 0;
+        }
+        .course-card.expanded .expand-arrow { transform: rotate(90deg); }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .chart-section { grid-template-columns: 1fr; }
+            .forge-grid { grid-template-columns: 1fr; }
+            .forge-connector { transform: rotate(90deg); }
+            .player-tabs { flex-wrap: wrap; }
+        }
+
+        /* PROGRESS MINI BAR */
+        .progress-mini {
+            width: 100%;
+            height: 4px;
+            background: #1a1a28;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .progress-mini-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+        .fill-blue { background: var(--accent-blue); }
+        .fill-green { background: var(--accent-green); }
+        .fill-orange { background: var(--accent-orange); }
+        .fill-purple { background: var(--accent-purple); }
+
+        /* PRINTING */
+        @media print {
+            body { background: #fff; color: #000; }
+            .course-card, .stat-card, .btc-tank, .scholar-rank, .skill-tree, .forge-section, .rules-section, .chart-card { border-color: #ccc; background: #fff; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>AI SKILLS QUEST</h1>
+        <div class="subtitle">The Anthropic Academy Campaign // 2026</div>
+    </div>
+
+    <div class="player-tabs">
+        <div class="player-tab" id="tab-son" onclick="switchPlayer('son')">
+            <span class="icon">&#9889;</span>
+            <span>THE BUILDER</span>
+            <span class="tag">RIO</span>
+        </div>
+        <div class="both-tab" id="tab-both" onclick="switchPlayer('both')">
+            &#9876; THE FORGE
+        </div>
+        <div class="player-tab" id="tab-daughter" onclick="switchPlayer('daughter')">
+            <span class="icon">&#9733;</span>
+            <span>THE SCHOLAR</span>
+            <span class="tag">STAR</span>
+        </div>
+    </div>
+
+    <!-- SON PANEL -->
+    <div class="player-panel" id="panel-son">
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Total Missions</div>
+                <div class="stat-value" style="color: var(--accent-blue);">42</div>
+                <div class="stat-sub">Across 8 courses</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Completed</div>
+                <div class="stat-value" style="color: var(--accent-green);">0</div>
+                <div class="stat-sub">Click missions to check off</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Sprint Format</div>
+                <div class="stat-value" style="color: var(--accent-orange); font-size: 22px;">15-20 min</div>
+                <div class="stat-sub">Max mission length</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total BTC Earned</div>
+                <div class="stat-value" style="color: var(--btc-gold);">0 sats</div>
+                <div class="stat-sub">Keep building, keep stacking</div>
+            </div>
+        </div>
+
+        <!-- BTC GAS TANK -->
+        <div class="btc-tank">
+            <div class="btc-tank-header">
+                <div class="btc-tank-title">&#9883; BTC GAS TANK</div>
+                <div class="btc-tank-amount">0 / 100,000 sats</div>
+            </div>
+            <div class="btc-tank-bar-outer">
+                <div class="btc-tank-bar-inner" style="width: 0%;">
+                    <span class="btc-tank-label">0%</span>
+                </div>
+            </div>
+            <div class="btc-milestones">
+                <div class="btc-milestone">0<br>START</div>
+                <div class="btc-milestone">25K<br>IGNITION</div>
+                <div class="btc-milestone">50K<br>CRUISING</div>
+                <div class="btc-milestone">75K<br>OVERDRIVE</div>
+                <div class="btc-milestone">100K<br>FULL TANK</div>
+            </div>
+        </div>
+
+        <!-- SON SKILL TREE -->
+        <div class="skill-tree">
+            <h3>Skill Tree // The Builder's Path</h3>
+            <div class="tree-container">
+                <div class="tree-row">
+                    <div class="tree-node active">&#9655; Claude 101</div>
+                </div>
+                <div class="tree-connector">|</div>
+                <div class="tree-row">
+                    <div class="tree-node locked">&#9655; AI Fluency: Framework</div>
+                </div>
+                <div class="tree-connector">|</div>
+                <div class="tree-row">
+                    <div class="tree-node locked">&#9655; Claude Code in Action</div>
+                    <div class="tree-node locked">&#9655; Prompt Engineering (GitHub)</div>
+                </div>
+                <div class="tree-connector">|</div>
+                <div class="tree-row">
+                    <div class="tree-node locked">&#9655; Agent Skills</div>
+                </div>
+                <div class="tree-connector">|</div>
+                <div class="tree-row">
+                    <div class="tree-node locked">&#9655; Claude API (Selected)</div>
+                    <div class="tree-node locked">&#9655; Real World Prompting (GitHub)</div>
+                </div>
+                <div class="tree-connector">|</div>
+                <div class="tree-row">
+                    <div class="tree-node locked">&#9655; Intro to MCP</div>
+                </div>
+                <div class="tree-connector">|</div>
+                <div class="tree-row">
+                    <div class="tree-node locked">&#9876; THE FORGE (Co-op Capstone)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SON PHASES -->
+
+        <!-- PHASE 1 -->
+        <div class="phase-section">
+            <div class="phase-header">
+                <div class="phase-number" style="background: var(--accent-blue); color: #000;">1</div>
+                <div>
+                    <div class="phase-title">BOOT SEQUENCE</div>
+                    <div class="phase-subtitle">Learn the tool. Learn to talk to it.</div>
+                </div>
+                <div class="phase-timeline">Week 1-2</div>
+            </div>
+            <div class="course-grid">
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Claude 101</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta">
+                        <span>SKILLJAR</span>
+                        <span>~30 MIN</span>
+                        <span>FOUNDATIONAL</span>
+                    </div>
+                    <div class="course-desc">Core features, basic prompting, everyday use cases. The starting line.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-blue" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Watch all lectures (skip nothing, take zero notes)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Write 3 prompts that solve real problems you face this week</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Compress: Record a 60-sec video explaining what Claude is to a friend who has never used it</div><div class="mission-type compress">COMPRESS</div></div>
+                    </div>
+                    <div class="course-reward reward-btc">&#9883; Complete = 5,000 sats deposited to your tank</div>
+                </div>
+
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">AI Fluency: Framework & Foundations</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta">
+                        <span>SKILLJAR</span>
+                        <span>14 LECTURES // 1.1 HRS</span>
+                        <span>1 QUIZ</span>
+                    </div>
+                    <div class="course-desc">The 4D Framework: Delegation, Description, Discernment, Diligence. This is the operating system for thinking about AI. Don't skip this because it sounds soft. It's not.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-blue" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Watch lectures 1-7 (Session A: 30 min max)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Watch lectures 8-14 (Session B: 30 min max)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Pass the quiz (first try counts double sats)</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Use the 4D Framework to write a prompt that could help Dad with a Brave Star task</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Compress: 60-sec explanation of the 4D Framework. Text Star the video.</div><div class="mission-type compress">COMPRESS</div></div>
+                    </div>
+                    <div class="course-reward reward-btc">&#9883; Complete = 8,000 sats (bonus 3K if quiz passed first try)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-section">
+            <div class="phase-header">
+                <div class="phase-number" style="background: var(--accent-green); color: #000;">2</div>
+                <div>
+                    <div class="phase-title">HANDS ON THE CONTROLS</div>
+                    <div class="phase-subtitle">Stop chatting. Start building.</div>
+                </div>
+                <div class="phase-timeline">Week 3-4</div>
+            </div>
+            <div class="course-grid">
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Claude Code in Action</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta">
+                        <span>SKILLJAR</span>
+                        <span>15 LECTURES // 1 HR</span>
+                        <span>1 QUIZ</span>
+                    </div>
+                    <div class="course-desc">This is where it gets real. Learn Claude Code: the command line AI that reads files, writes code, runs commands. You don't need to know how to code. You need to know how to direct an AI that codes.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-green" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Install Claude Code on your machine (follow setup guide)</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Watch lectures 1-8: Architecture + basics (20 min)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Use Claude Code to create a simple Python script that does something useful for you</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Watch lectures 9-15: MCP, GitHub, Hooks (20 min)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Use Claude Code to build a simple landing page for a business idea</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Compress: Show Dad what you built. 60-sec walkthrough. Ship it or scrap it.</div><div class="mission-type compress">COMPRESS</div></div>
+                    </div>
+                    <div class="course-reward reward-btc">&#9883; Complete = 15,000 sats (the big one -- this is the skill that pays)</div>
+                </div>
+
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Prompt Engineering Interactive Tutorial</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta">
+                        <span>GITHUB NOTEBOOK</span>
+                        <span>SELF-PACED</span>
+                        <span>HANDS-ON</span>
+                    </div>
+                    <div class="course-desc">Jupyter notebooks from Anthropic's GitHub. Step-by-step prompting techniques with live exercises. Run the code. Change the inputs. See what happens.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-green" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Clone the repo and set up your environment (Claude Code can help)</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete notebooks 1-4: Core techniques (20 min sessions)</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete notebooks 5-9: Advanced techniques (20 min sessions)</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Compress: Pick your best prompt trick and teach it to Star in 60 seconds</div><div class="mission-type compress">COMPRESS</div></div>
+                    </div>
+                    <div class="course-reward reward-btc">&#9883; Complete = 10,000 sats</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHASE 3 -->
+        <div class="phase-section">
+            <div class="phase-header">
+                <div class="phase-number" style="background: var(--accent-orange); color: #000;">3</div>
+                <div>
+                    <div class="phase-title">POWER TOOLS</div>
+                    <div class="phase-subtitle">Agent Skills, API fundamentals, real-world prompting.</div>
+                </div>
+                <div class="phase-timeline">Week 5-7</div>
+            </div>
+            <div class="course-grid">
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Introduction to Agent Skills</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta">
+                        <span>SKILLJAR</span>
+                        <span>6 LECTURES // 30 MIN</span>
+                        <span>ENGINEERING</span>
+                    </div>
+                    <div class="course-desc">Build reusable Skills in Claude Code. Think of it like crafting a tool in Minecraft that you can use over and over. You make it once, Claude uses it every time the right task comes up.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-orange" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Watch all 6 lectures (one sitting, 30 min)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Create your first custom Skill for a task you repeat often</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Create a Skill that could help Brave Star (product descriptions, size guides, etc.)</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Compress: Demo your Brave Star Skill to Dad. If he uses it, bonus 5K sats.</div><div class="mission-type compress">COMPRESS</div></div>
+                    </div>
+                    <div class="course-reward reward-btc">&#9883; Complete = 12,000 sats + 5K bonus if Dad actually uses your Skill</div>
+                </div>
+
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Building with the Claude API (Selected Modules)</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta">
+                        <span>SKILLJAR</span>
+                        <span>SELECTED FROM 84 LECTURES</span>
+                        <span>~3 HRS SELECTED</span>
+                    </div>
+                    <div class="course-desc">You don't need all 84 lectures. Hit these modules: API Setup, Multi-turn Conversations, Tool Use, and Agents. Skip the deep ML theory. You're building, not researching.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-orange" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Module: API Setup + First Call (20 min)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Module: Multi-turn Conversations (20 min)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Module: Tool Use (20 min)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Module: Agents (20 min)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Make one API call work from your terminal. Screenshot it.</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Compress: Explain the difference between chatting with Claude and calling the API in 60 sec</div><div class="mission-type compress">COMPRESS</div></div>
+                    </div>
+                    <div class="course-reward reward-btc">&#9883; Complete = 15,000 sats</div>
+                </div>
+
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Real World Prompting (GitHub)</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta">
+                        <span>GITHUB NOTEBOOK</span>
+                        <span>SELF-PACED</span>
+                        <span>APPLIED</span>
+                    </div>
+                    <div class="course-desc">Take the prompting techniques and apply them to complex, messy, real problems. This is the jump from practice range to live fire.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-orange" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Work through all notebooks (break into 20 min sessions)</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Take a real business problem and solve it with a complex prompt chain</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Compress: Walk Dad through your prompt chain. Show input, process, output.</div><div class="mission-type compress">COMPRESS</div></div>
+                    </div>
+                    <div class="course-reward reward-btc">&#9883; Complete = 10,000 sats</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-section">
+            <div class="phase-header">
+                <div class="phase-number" style="background: var(--accent-purple); color: #fff;">4</div>
+                <div>
+                    <div class="phase-title">CONNECT THE WORLD</div>
+                    <div class="phase-subtitle">MCP: Make Claude talk to other systems.</div>
+                </div>
+                <div class="phase-timeline">Week 8</div>
+            </div>
+            <div class="course-grid">
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Introduction to Model Context Protocol</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta">
+                        <span>SKILLJAR</span>
+                        <span>MCP FUNDAMENTALS</span>
+                        <span>ENGINEERING</span>
+                    </div>
+                    <div class="course-desc">MCP lets Claude plug into other tools -- databases, APIs, file systems. Think of it like redstone in Minecraft: it connects everything together and makes automation possible.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-purple" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Watch all MCP fundamentals lectures (one session)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Connect Claude to one external tool using MCP</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Compress: Explain MCP to a non-technical person in 60 sec. Record it.</div><div class="mission-type compress">COMPRESS</div></div>
+                    </div>
+                    <div class="course-reward reward-btc">&#9883; Complete = 15,000 sats</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOSS BATTLE -->
+        <div class="phase-section">
+            <div class="phase-header">
+                <div class="phase-number" style="background: var(--accent-red); color: #fff;">&#9876;</div>
+                <div>
+                    <div class="phase-title">BOSS BATTLE: THE FORGE</div>
+                    <div class="phase-subtitle">Co-op capstone with Star. Details in The Forge tab.</div>
+                </div>
+                <div class="phase-timeline">Week 9-10</div>
+            </div>
+            <div class="course-grid">
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">The Forge: Cooperative Capstone Project</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta">
+                        <span>CO-OP</span>
+                        <span>2 WEEKS</span>
+                        <span>BOSS BATTLE</span>
+                    </div>
+                    <div class="course-desc">Build something real together. You handle Claude Code, Agent Skills, and MCP. Star handles the API logic, prompt architecture, and documentation. Neither can finish without the other.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-purple" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Pick a project together (see The Forge tab for ideas)</div><div class="mission-type coop">CO-OP</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build your half: Claude Code tooling + MCP integrations</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Integrate with Star's API/prompt layer</div><div class="mission-type coop">CO-OP</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Demo to Dad. Ship it or explain why it didn't work. Both earn respect.</div><div class="mission-type boss">BOSS</div></div>
+                    </div>
+                    <div class="course-reward reward-btc">&#9883; Complete = 10,000 sats + FULL TANK BONUS if all previous courses done</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DAUGHTER PANEL -->
+    <div class="player-panel" id="panel-daughter">
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Total Missions</div>
+                <div class="stat-value" style="color: var(--accent-blue);">52</div>
+                <div class="stat-sub">Across 9 courses + GitHub</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Completed</div>
+                <div class="stat-value" style="color: var(--accent-green);">0</div>
+                <div class="stat-sub">Click missions to check off</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Session Format</div>
+                <div class="stat-value" style="color: var(--scholar-purple); font-size: 22px;">DEEP DIVE</div>
+                <div class="stat-sub">45-60 min structured sessions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Current Rank</div>
+                <div class="stat-value" style="color: var(--scholar-purple); font-size: 20px;">INITIATE</div>
+                <div class="stat-sub">7 ranks to Principal Investigator</div>
+            </div>
+        </div>
+
+        <!-- SCHOLAR RANK -->
+        <div class="scholar-rank">
+            <div class="scholar-rank-header">
+                <div>
+                    <div style="font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:2px; margin-bottom:4px;">Research Rank</div>
+                    <div class="scholar-current">INITIATE</div>
+                </div>
+                <div class="scholar-next">Next: APPRENTICE (complete Phase 1)</div>
+            </div>
+            <div class="scholar-bar-outer">
+                <div class="scholar-bar-inner" style="width: 0%;"></div>
+            </div>
+            <div class="scholar-ranks-row">
+                <div class="scholar-rank-item current">Initiate</div>
+                <div class="scholar-rank-item">Apprentice</div>
+                <div class="scholar-rank-item">Scholar</div>
+                <div class="scholar-rank-item">Researcher</div>
+                <div class="scholar-rank-item">Fellow</div>
+                <div class="scholar-rank-item">Investigator</div>
+                <div class="scholar-rank-item">Principal<br>Investigator</div>
+            </div>
+        </div>
+
+        <!-- DAUGHTER SKILL TREE -->
+        <div class="skill-tree">
+            <h3>Skill Tree // The Scholar's Path</h3>
+            <div class="tree-container">
+                <div class="tree-row">
+                    <div class="tree-node active">&#9655; Claude 101</div>
+                </div>
+                <div class="tree-connector">|</div>
+                <div class="tree-row">
+                    <div class="tree-node locked">&#9655; AI Fluency for Students</div>
+                    <div class="tree-node locked">&#9655; AI Fluency: Framework</div>
+                </div>
+                <div class="tree-connector">|</div>
+                <div class="tree-row">
+                    <div class="tree-node locked">&#9655; Building with the Claude API (Full)</div>
+                </div>
+                <div class="tree-connector">|</div>
+                <div class="tree-row">
+                    <div class="tree-node locked">&#9655; Prompt Engineering (GitHub)</div>
+                    <div class="tree-node locked">&#9655; Prompt Evaluations (GitHub)</div>
+                </div>
+                <div class="tree-connector">|</div>
+                <div class="tree-row">
+                    <div class="tree-node locked">&#9655; Claude Code in Action</div>
+                    <div class="tree-node locked">&#9655; Agent Skills</div>
+                </div>
+                <div class="tree-connector">|</div>
+                <div class="tree-row">
+                    <div class="tree-node locked">&#9655; Intro to MCP</div>
+                    <div class="tree-node locked">&#9655; MCP Advanced</div>
+                </div>
+                <div class="tree-connector">|</div>
+                <div class="tree-row">
+                    <div class="tree-node locked">&#9876; THE FORGE (Co-op Capstone)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAUGHTER PHASE 1 -->
+        <div class="phase-section">
+            <div class="phase-header">
+                <div class="phase-number" style="background: var(--accent-blue); color: #000;">1</div>
+                <div>
+                    <div class="phase-title">FOUNDATIONS</div>
+                    <div class="phase-subtitle">Build the conceptual framework before touching code.</div>
+                </div>
+                <div class="phase-timeline">Week 1-2</div>
+            </div>
+            <div class="course-grid">
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Claude 101</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta"><span>SKILLJAR</span><span>~30 MIN</span><span>FOUNDATIONAL</span></div>
+                    <div class="course-desc">Same starting point as Rio. Core features, prompting basics.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-blue" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete all lectures</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Write 3 prompts for your coursework (research, writing, analysis)</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Artifact: Write a 1-page reflection on where AI fits in academic work (keep it honest)</div><div class="mission-type build">BUILD</div></div>
+                    </div>
+                    <div class="course-reward reward-scholar">&#9733; Complete = Rank progress +10%</div>
+                </div>
+
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">AI Fluency for Students</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta"><span>SKILLJAR</span><span>5 LECTURES // 30 MIN</span><span>EDUCATION</span></div>
+                    <div class="course-desc">Designed for exactly where you are. Covers using AI as a thinking partner vs. a crutch, academic integrity, career planning. This isn't a warning lecture. It's a competitive advantage lecture.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-blue" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete all 5 lectures</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Create an "AI Use Policy" for yourself -- when you will and won't use AI for school</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Compress: 60-sec video explaining to a classmate why AI fluency matters for their career</div><div class="mission-type compress">COMPRESS</div></div>
+                    </div>
+                    <div class="course-reward reward-scholar">&#9733; Complete = Rank progress +10%</div>
+                </div>
+
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">AI Fluency: Framework & Foundations</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta"><span>SKILLJAR</span><span>14 LECTURES // 1.1 HRS</span><span>1 QUIZ</span></div>
+                    <div class="course-desc">The 4D Framework deep dive. Delegation, Description, Discernment, Diligence. Think of these as the four variables in an equation. Master each one, and the outputs improve exponentially.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-blue" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete all 14 lectures (take notes -- your style)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Pass the quiz (aim for 100%)</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Artifact: Write a 2-page analysis comparing the 4D Framework to a methodology from one of your courses</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Compress: Teach Rio the 4D Framework using only analogies he'd understand</div><div class="mission-type compress">COMPRESS</div></div>
+                    </div>
+                    <div class="course-reward reward-scholar">&#9733; Complete = RANK UP to APPRENTICE</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAUGHTER PHASE 2 -->
+        <div class="phase-section">
+            <div class="phase-header">
+                <div class="phase-number" style="background: var(--accent-green); color: #000;">2</div>
+                <div>
+                    <div class="phase-title">THE FULL API</div>
+                    <div class="phase-subtitle">The comprehensive course. 84 lectures. You'll love the structure.</div>
+                </div>
+                <div class="phase-timeline">Week 3-5</div>
+            </div>
+            <div class="course-grid">
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Building with the Claude API (Full Course)</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta"><span>SKILLJAR</span><span>84 LECTURES // 8.1 HRS</span><span>10 QUIZZES</span></div>
+                    <div class="course-desc">The heavyweight. Covers everything: API setup, multi-turn, vision, RAG, tool use, agents, streaming, evaluations. Your brother is doing selected modules. You're doing the whole thing. That's your edge.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-green" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Lectures 1-20: API Fundamentals + Multi-turn (Session block A)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Lectures 21-42: Vision, RAG, Advanced Prompting (Session block B)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Lectures 43-63: Tool Use + Agents (Session block C)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Lectures 64-84: Streaming, Evals, Production (Session block D)</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Pass all 10 quizzes</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Artifact: Build a working API integration that does something useful for your studies</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Compress: Explain the Claude API to a liberal arts major in 60 seconds</div><div class="mission-type compress">COMPRESS</div></div>
+                    </div>
+                    <div class="course-reward reward-scholar">&#9733; Complete = RANK UP to SCHOLAR + Portfolio artifact</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAUGHTER PHASE 3 -->
+        <div class="phase-section">
+            <div class="phase-header">
+                <div class="phase-number" style="background: var(--accent-orange); color: #000;">3</div>
+                <div>
+                    <div class="phase-title">PRECISION TOOLS</div>
+                    <div class="phase-subtitle">Prompt engineering depth + evaluation methodology.</div>
+                </div>
+                <div class="phase-timeline">Week 6-7</div>
+            </div>
+            <div class="course-grid">
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Prompt Engineering Interactive Tutorial (GitHub)</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta"><span>GITHUB NOTEBOOK</span><span>COMPREHENSIVE</span><span>HANDS-ON</span></div>
+                    <div class="course-desc">Jupyter notebooks with live exercises. Every technique builds on the last. Your academic rigor is an asset here -- treat each notebook like a lab.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-orange" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete all notebooks, modifying examples to test edge cases</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Artifact: Create a "prompt patterns taxonomy" -- categorize every technique by use case</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Compress: Teach Rio your single most powerful prompt technique</div><div class="mission-type compress">COMPRESS</div></div>
+                    </div>
+                    <div class="course-reward reward-scholar">&#9733; Complete = Rank progress +15% + Portfolio artifact</div>
+                </div>
+
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Prompt Evaluations (GitHub)</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta"><span>GITHUB NOTEBOOK</span><span>ADVANCED</span><span>METHODOLOGY</span></div>
+                    <div class="course-desc">How to measure whether a prompt actually works. This is the scientific method applied to AI. Hypothesis, test, measure, iterate. Right in your wheelhouse.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-orange" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete all evaluation notebooks</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Artifact: Design an evaluation framework for one of your academic use cases</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Compress: Explain why "vibes-based testing" fails and what to do instead (60 sec)</div><div class="mission-type compress">COMPRESS</div></div>
+                    </div>
+                    <div class="course-reward reward-scholar">&#9733; Complete = RANK UP to RESEARCHER</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAUGHTER PHASE 4 -->
+        <div class="phase-section">
+            <div class="phase-header">
+                <div class="phase-number" style="background: var(--accent-purple); color: #fff;">4</div>
+                <div>
+                    <div class="phase-title">BUILDER MODE</div>
+                    <div class="phase-subtitle">Claude Code, Agent Skills, and MCP. Now you build.</div>
+                </div>
+                <div class="phase-timeline">Week 8-9</div>
+            </div>
+            <div class="course-grid">
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Claude Code in Action</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta"><span>SKILLJAR</span><span>15 LECTURES // 1 HR</span><span>1 QUIZ</span></div>
+                    <div class="course-desc">Your brother did this in Phase 2. You're doing it now because you have the API knowledge to understand what's happening under the hood. Different path, different depth.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-purple" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Install Claude Code + complete all 15 lectures</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Pass the quiz</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Use Claude Code to create a research workflow tool</div><div class="mission-type build">BUILD</div></div>
+                    </div>
+                    <div class="course-reward reward-scholar">&#9733; Complete = Rank progress +10%</div>
+                </div>
+
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Introduction to Agent Skills</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta"><span>SKILLJAR</span><span>6 LECTURES // 30 MIN</span><span>ENGINEERING</span></div>
+                    <div class="course-desc">Build reusable Skills. Your academic angle: create Skills for research synthesis, literature review, or data analysis.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-purple" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete all 6 lectures</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Create a Skill for a recurring academic task</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Artifact: Document your Skill with proper README and examples</div><div class="mission-type build">BUILD</div></div>
+                    </div>
+                    <div class="course-reward reward-scholar">&#9733; Complete = RANK UP to FELLOW</div>
+                </div>
+
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">Introduction to MCP + MCP Advanced Topics</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta"><span>SKILLJAR</span><span>BOTH COURSES</span><span>FULL DEPTH</span></div>
+                    <div class="course-desc">Your brother does Intro MCP only. You do both -- Intro and Advanced. Transport mechanisms, production patterns, sampling. The full picture.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-purple" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete Intro MCP lectures</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Complete Advanced MCP lectures</div><div class="mission-type watch">WATCH</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Build: Connect Claude to an academic tool or database via MCP</div><div class="mission-type build">BUILD</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Artifact: Write a technical comparison of MCP transport patterns and when to use each</div><div class="mission-type build">BUILD</div></div>
+                    </div>
+                    <div class="course-reward reward-scholar">&#9733; Complete = RANK UP to INVESTIGATOR</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DAUGHTER BOSS BATTLE -->
+        <div class="phase-section">
+            <div class="phase-header">
+                <div class="phase-number" style="background: var(--accent-red); color: #fff;">&#9876;</div>
+                <div>
+                    <div class="phase-title">BOSS BATTLE: THE FORGE + THESIS</div>
+                    <div class="phase-subtitle">Co-op capstone + your individual thesis artifact.</div>
+                </div>
+                <div class="phase-timeline">Week 10-12</div>
+            </div>
+            <div class="course-grid">
+                <div class="course-card" onclick="toggleCourse(this)">
+                    <div class="course-top">
+                        <div class="course-name">The Forge + Principal Investigator Thesis</div>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                    <div class="course-meta"><span>CO-OP + SOLO</span><span>2-3 WEEKS</span><span>FINAL BOSS</span></div>
+                    <div class="course-desc">Two deliverables. First: the co-op Forge project with Rio (you handle API logic + prompt architecture). Second: a solo "thesis" -- a comprehensive artifact that demonstrates everything you've learned. This is your portfolio piece.</div>
+                    <div class="progress-mini"><div class="progress-mini-fill fill-purple" style="width:0%"></div></div>
+                    <div class="course-missions">
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Co-op: Build your half of The Forge project (API + prompt layer)</div><div class="mission-type coop">CO-OP</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Co-op: Integrate with Rio's Claude Code + MCP layer</div><div class="mission-type coop">CO-OP</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Solo: Design and build your thesis artifact (a tool, paper, or system)</div><div class="mission-type boss">BOSS</div></div>
+                        <div class="mission-item"><div class="mission-check" onclick="event.stopPropagation(); toggleMission(this)"></div><div class="mission-text">Present both to Dad. Defend your thesis.</div><div class="mission-type boss">BOSS</div></div>
+                    </div>
+                    <div class="course-reward reward-scholar">&#9733; Complete = RANK UP to PRINCIPAL INVESTIGATOR</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTH / FORGE PANEL -->
+    <div class="player-panel" id="panel-both">
+        <div class="forge-section">
+            <div class="forge-title">THE FORGE</div>
+            <div class="forge-desc">The cooperative capstone. Like building in Minecraft, you each bring what you're good at. Neither can finish alone. The project only works when both halves connect.</div>
+
+            <div class="forge-grid">
+                <div class="forge-player">
+                    <div class="forge-player-name" style="color: var(--btc-gold);">&#9889; THE BUILDER (Rio)</div>
+                    <div class="forge-player-role">Front-End + Tooling + Infrastructure</div>
+                    <div class="forge-task">&#9656; Claude Code implementation</div>
+                    <div class="forge-task">&#9656; Agent Skills for the project</div>
+                    <div class="forge-task">&#9656; MCP integrations (external tools)</div>
+                    <div class="forge-task">&#9656; User-facing interface</div>
+                    <div class="forge-task">&#9656; Demo and walkthrough</div>
+                </div>
+                <div class="forge-connector">+</div>
+                <div class="forge-player">
+                    <div class="forge-player-name" style="color: var(--scholar-purple);">&#9733; THE SCHOLAR (Star)</div>
+                    <div class="forge-player-role">API Logic + Prompt Architecture + Documentation</div>
+                    <div class="forge-task">&#9656; API integration and data flow</div>
+                    <div class="forge-task">&#9656; Prompt engineering (complex chains)</div>
+                    <div class="forge-task">&#9656; Evaluation framework for outputs</div>
+                    <div class="forge-task">&#9656; Technical documentation</div>
+                    <div class="forge-task">&#9656; Defense and explanation</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rules-section">
+            <h3>Forge Project Ideas</h3>
+            <div class="rule-item">
+                <div class="rule-num">01</div>
+                <div><strong>Brave Star AI Assistant</strong> -- Build a custom tool for Dad's business. Product description generator, inventory forecaster, customer service bot, or marketing copy engine. Rio builds the interface and Skills. Star builds the prompt chains and evaluation layer. Real business impact.</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-num">02</div>
+                <div><strong>Study + Build Partner</strong> -- An AI system where Daughter's academic research workflows feed into Son's tool-building pipeline. She identifies a problem in her coursework, designs the prompt architecture, he builds the tool with Claude Code. They ship something a student or entrepreneur would actually use.</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-num">03</div>
+                <div><strong>The Newsletter Machine</strong> -- An automated content pipeline. Daughter designs the editorial framework, prompt chains for quality, and evaluation criteria. Son builds the Claude Code automation, MCP integrations (pulling from sources), and delivery system. Pick any topic they both care about.</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-num">04</div>
+                <div><strong>Wild Card</strong> -- They propose their own project. Must use: Claude API or Claude Code, at least one Agent Skill, at least one MCP integration, and documented prompt engineering. Must be demo-able. Must solve a real problem for a real person.</div>
+            </div>
+        </div>
+
+        <div class="rules-section">
+            <h3>The Rules of The Forge</h3>
+            <div class="rule-item">
+                <div class="rule-num">01</div>
+                <div>You must agree on the project together. If you can't agree, Dad picks.</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-num">02</div>
+                <div>You cannot do each other's tasks. Builder builds. Scholar architects. Stay in your lane, trust the other.</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-num">03</div>
+                <div>You must integrate your work. The project only counts if both halves connect and run together.</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-num">04</div>
+                <div>You demo to Dad together. Both present. Both answer questions. This is the boss battle.</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-num">05</div>
+                <div>If it breaks during the demo, explain why. Debugging earns more respect than a fake success.</div>
+            </div>
+        </div>
+
+        <!-- TIMELINE CHART -->
+        <div class="chart-section">
+            <div class="chart-card">
+                <h3>Builder (Son) -- Weekly Course Load</h3>
+                <canvas id="chart-son-timeline"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Scholar (Daughter) -- Weekly Course Load</h3>
+                <canvas id="chart-daughter-timeline"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div class="chart-card">
+                <h3>Mission Types -- Builder</h3>
+                <canvas id="chart-son-types"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Mission Types -- Scholar</h3>
+                <canvas id="chart-daughter-types"></canvas>
+            </div>
+        </div>
+
+        <div class="rules-section">
+            <h3>Program Setup Checklist (For Dad)</h3>
+            <div class="rule-item">
+                <div class="rule-num">01</div>
+                <div><strong>Accounts:</strong> Create Skilljar accounts for both at <a href="https://anthropic.skilljar.com" target="_blank">anthropic.skilljar.com</a>. Email-only signup, free.</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-num">02</div>
+                <div><strong>Claude Pro:</strong> Set up Pro plans for both. Upgrade Son to Max if he hits token limits during Claude Code (Phase 2+).</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-num">03</div>
+                <div><strong>GitHub Access:</strong> Both need GitHub accounts. Clone <a href="https://github.com/anthropics/courses" target="_blank">github.com/anthropics/courses</a> for the notebook exercises.</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-num">04</div>
+                <div><strong>API Key:</strong> Get a Claude API key from <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> for the API course and GitHub notebooks. Set a spending cap ($20/month is plenty for learning).</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-num">05</div>
+                <div><strong>BTC Wallet:</strong> Set up a wallet or custodial account for Son's sats rewards. Total possible: ~100,000 sats across all courses.</div>
+            </div>
+            <div class="rule-item">
+                <div class="rule-num">06</div>
+                <div><strong>Weekly Check-in:</strong> 15-min weekly sync with each kid. They show you what they built. Not what they watched -- what they built.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // =============================================
+    // PERSISTENCE LAYER (localStorage)
+    // =============================================
+    const STORAGE_KEY = 'ai-skills-quest-v1';
+
+    function loadState() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            return raw ? JSON.parse(raw) : { son: {}, daughter: {} };
+        } catch(e) { return { son: {}, daughter: {} }; }
+    }
+
+    function saveState(state) {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+    }
+
+    function getMissionId(el) {
+        const panel = el.closest('.player-panel');
+        const player = panel ? panel.id.replace('panel-', '') : 'unknown';
+        const allMissions = panel.querySelectorAll('.mission-check');
+        const idx = Array.from(allMissions).indexOf(el);
+        return { player, key: player + '-mission-' + idx };
+    }
+
+    // Assign IDs to all missions on load
+    function indexMissions() {
+        ['son', 'daughter'].forEach(player => {
+            const panel = document.getElementById('panel-' + player);
+            if (!panel) return;
+            const checks = panel.querySelectorAll('.mission-check');
+            checks.forEach((ch, i) => {
+                ch.dataset.missionKey = player + '-mission-' + i;
+                ch.dataset.player = player;
+            });
+        });
+    }
+
+    // Restore saved state
+    function restoreState() {
+        const state = loadState();
+        ['son', 'daughter'].forEach(player => {
+            const panel = document.getElementById('panel-' + player);
+            if (!panel) return;
+            const checks = panel.querySelectorAll('.mission-check');
+            checks.forEach((ch, i) => {
+                const key = player + '-mission-' + i;
+                if (state[player] && state[player][key]) {
+                    ch.classList.add('done');
+                    ch.innerHTML = '&#10003;';
+                    const text = ch.nextElementSibling;
+                    if (text && text.classList.contains('mission-text')) text.classList.add('done');
+                }
+            });
+        });
+    }
+
+    // =============================================
+    // STATS ENGINE
+    // =============================================
+    const SON_BTC_REWARDS = {
+        // course index -> sats (mapped to phase/course order)
+        0: 5000,   // Claude 101
+        1: 8000,   // AI Fluency Framework (+ 3K bonus)
+        2: 15000,  // Claude Code in Action
+        3: 10000,  // Prompt Engineering GitHub
+        4: 12000,  // Agent Skills (+ 5K bonus)
+        5: 15000,  // API Selected
+        6: 10000,  // Real World Prompting
+        7: 15000,  // Intro MCP
+        8: 10000,  // The Forge
+    };
+
+    const SCHOLAR_RANKS = ['INITIATE', 'APPRENTICE', 'SCHOLAR', 'RESEARCHER', 'FELLOW', 'INVESTIGATOR', 'PRINCIPAL INVESTIGATOR'];
+
+    function countCompleted(player) {
+        const panel = document.getElementById('panel-' + player);
+        if (!panel) return { done: 0, total: 0 };
+        const checks = panel.querySelectorAll('.mission-check');
+        const done = panel.querySelectorAll('.mission-check.done').length;
+        return { done, total: checks.length };
+    }
+
+    function countCompletedPerCourse(player) {
+        const panel = document.getElementById('panel-' + player);
+        if (!panel) return [];
+        const courses = panel.querySelectorAll('.course-card');
+        return Array.from(courses).map(card => {
+            const checks = card.querySelectorAll('.mission-check');
+            const done = card.querySelectorAll('.mission-check.done');
+            return { total: checks.length, done: done.length, complete: checks.length > 0 && done.length === checks.length };
+        });
+    }
+
+    function updateSonStats() {
+        const { done, total } = countCompleted('son');
+        const courses = countCompletedPerCourse('son');
+        let sats = 0;
+        courses.forEach((c, i) => {
+            if (c.complete && SON_BTC_REWARDS[i] !== undefined) sats += SON_BTC_REWARDS[i];
+        });
+
+        // Update stat cards
+        const statValues = document.querySelectorAll('#panel-son .stat-value');
+        if (statValues[1]) statValues[1].textContent = done;
+        if (statValues[3]) statValues[3].textContent = sats.toLocaleString() + ' sats';
+
+        // Update BTC tank
+        const pct = Math.min(100, (sats / 100000) * 100);
+        const tankInner = document.querySelector('.btc-tank-bar-inner');
+        const tankAmount = document.querySelector('.btc-tank-amount');
+        const tankLabel = document.querySelector('.btc-tank-label');
+        if (tankInner) tankInner.style.width = pct + '%';
+        if (tankAmount) tankAmount.textContent = sats.toLocaleString() + ' / 100,000 sats';
+        if (tankLabel) tankLabel.textContent = Math.round(pct) + '%';
+
+        // Milestones
+        const milestones = document.querySelectorAll('.btc-milestone');
+        const thresholds = [0, 25000, 50000, 75000, 100000];
+        milestones.forEach((m, i) => {
+            if (sats >= thresholds[i]) m.classList.add('reached');
+            else m.classList.remove('reached');
+        });
+
+        // Progress bars on course cards
+        const sonCards = document.querySelectorAll('#panel-son .course-card');
+        sonCards.forEach(card => {
+            const checks = card.querySelectorAll('.mission-check');
+            const doneChecks = card.querySelectorAll('.mission-check.done');
+            const bar = card.querySelector('.progress-mini-fill');
+            if (bar && checks.length > 0) {
+                bar.style.width = ((doneChecks.length / checks.length) * 100) + '%';
+            }
+        });
+
+        // Skill tree nodes
+        updateSkillTree('son', courses);
+    }
+
+    function updateDaughterStats() {
+        const { done, total } = countCompleted('daughter');
+        const courses = countCompletedPerCourse('daughter');
+        const completedCourses = courses.filter(c => c.complete).length;
+
+        // Scholar rank
+        let rankIdx = 0;
+        if (completedCourses >= 3) rankIdx = 1;  // Apprentice
+        if (completedCourses >= 4) rankIdx = 2;  // Scholar
+        if (completedCourses >= 6) rankIdx = 3;  // Researcher
+        if (completedCourses >= 8) rankIdx = 4;  // Fellow
+        if (completedCourses >= 9) rankIdx = 5;  // Investigator
+        if (completedCourses >= 10) rankIdx = 6; // PI
+
+        const rankPct = Math.min(100, (completedCourses / 10) * 100);
+
+        // Update stat cards
+        const statValues = document.querySelectorAll('#panel-daughter .stat-value');
+        if (statValues[1]) statValues[1].textContent = done;
+        if (statValues[3]) statValues[3].textContent = SCHOLAR_RANKS[rankIdx];
+
+        // Update rank bar
+        const rankBar = document.querySelector('.scholar-bar-inner');
+        if (rankBar) rankBar.style.width = rankPct + '%';
+        const currentRankEl = document.querySelector('.scholar-current');
+        if (currentRankEl) currentRankEl.textContent = SCHOLAR_RANKS[rankIdx];
+
+        const nextRankEl = document.querySelector('.scholar-next');
+        if (nextRankEl) {
+            if (rankIdx < SCHOLAR_RANKS.length - 1) {
+                nextRankEl.textContent = 'Next: ' + SCHOLAR_RANKS[rankIdx + 1];
+            } else {
+                nextRankEl.textContent = 'MAX RANK ACHIEVED';
+            }
+        }
+
+        // Rank items
+        const rankItems = document.querySelectorAll('.scholar-rank-item');
+        rankItems.forEach((item, i) => {
+            item.classList.remove('current', 'completed');
+            if (i < rankIdx) item.classList.add('completed');
+            else if (i === rankIdx) item.classList.add('current');
+        });
+
+        // Progress bars
+        const daughterCards = document.querySelectorAll('#panel-daughter .course-card');
+        daughterCards.forEach(card => {
+            const checks = card.querySelectorAll('.mission-check');
+            const doneChecks = card.querySelectorAll('.mission-check.done');
+            const bar = card.querySelector('.progress-mini-fill');
+            if (bar && checks.length > 0) {
+                bar.style.width = ((doneChecks.length / checks.length) * 100) + '%';
+            }
+        });
+
+        // Skill tree
+        updateSkillTree('daughter', courses);
+    }
+
+    function updateSkillTree(player, courses) {
+        const panel = document.getElementById('panel-' + player);
+        if (!panel) return;
+        const nodes = panel.querySelectorAll('.tree-node');
+        nodes.forEach((node, i) => {
+            node.classList.remove('active', 'unlocked', 'locked');
+            if (i < courses.length && courses[i] && courses[i].complete) {
+                node.classList.add('unlocked');
+            } else if (i === 0 || (i > 0 && i - 1 < courses.length && courses[i-1] && courses[i-1].complete)) {
+                node.classList.add('active');
+            } else {
+                node.classList.add('locked');
+            }
+        });
+    }
+
+    function updateAllStats() {
+        updateSonStats();
+        updateDaughterStats();
+    }
+
+    // =============================================
+    // PLAYER SWITCHING
+    // =============================================
+    function switchPlayer(player) {
+        document.querySelectorAll('.player-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.player-tab, .both-tab').forEach(t => {
+            t.classList.remove('active-son', 'active-daughter', 'active-both');
+        });
+        document.getElementById('panel-' + player).classList.add('active');
+        if (player === 'son') document.getElementById('tab-son').classList.add('active-son');
+        else if (player === 'daughter') document.getElementById('tab-daughter').classList.add('active-daughter');
+        else document.getElementById('tab-both').classList.add('active-both');
+        try { localStorage.setItem('ai-skills-quest-tab', player); } catch(e) {}
+    }
+
+    // COURSE EXPAND
+    function toggleCourse(card) {
+        card.classList.toggle('expanded');
+    }
+
+    // MISSION CHECK (with persistence)
+    function toggleMission(el) {
+        el.classList.toggle('done');
+        const text = el.nextElementSibling;
+        if (text && text.classList.contains('mission-text')) text.classList.toggle('done');
+        if (el.classList.contains('done')) {
+            el.innerHTML = '&#10003;';
+        } else {
+            el.innerHTML = '';
+        }
+
+        // Save to localStorage
+        const player = el.dataset.player;
+        const key = el.dataset.missionKey;
+        if (player && key) {
+            const state = loadState();
+            if (!state[player]) state[player] = {};
+            if (el.classList.contains('done')) {
+                state[player][key] = true;
+            } else {
+                delete state[player][key];
+            }
+            saveState(state);
+        }
+
+        // Update stats
+        updateAllStats();
+    }
+
+    // =============================================
+    // RESET BUTTON (hidden utility -- type 'reset' in console)
+    // =============================================
+    window.resetProgress = function() {
+        if (confirm('Reset ALL progress for both players? This cannot be undone.')) {
+            localStorage.removeItem(STORAGE_KEY);
+            location.reload();
+        }
+    };
+
+    // =============================================
+    // INIT
+    // =============================================
+    indexMissions();
+    restoreState();
+    const savedTab = localStorage.getItem('ai-skills-quest-tab') || 'son';
+    switchPlayer(savedTab);
+    updateAllStats();
+
+    // CHARTS
+    const COLORS = ['#4a9eff', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
+
+    Chart.defaults.color = '#8888a0';
+    Chart.defaults.borderColor = '#2a2a3a';
+    Chart.defaults.font.family = "'Inter', sans-serif";
+
+    // Son timeline
+    new Chart(document.getElementById('chart-son-timeline').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4', 'Wk 5', 'Wk 6', 'Wk 7', 'Wk 8', 'Wk 9', 'Wk 10'],
+            datasets: [{
+                label: 'Hours',
+                data: [1.5, 1.5, 2, 2, 2.5, 2.5, 2, 2, 3, 3],
+                backgroundColor: '#f7931aaa',
+                borderColor: '#f7931a',
+                borderWidth: 1,
+                borderRadius: 4,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, max: 5, ticks: { callback: v => v + 'h' }, grid: { color: '#1a1a28' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // Daughter timeline
+    new Chart(document.getElementById('chart-daughter-timeline').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4', 'Wk 5', 'Wk 6', 'Wk 7', 'Wk 8', 'Wk 9', 'Wk 10', 'Wk 11', 'Wk 12'],
+            datasets: [{
+                label: 'Hours',
+                data: [1.5, 2, 3, 3, 2.5, 2.5, 2.5, 2, 2.5, 2.5, 3, 3],
+                backgroundColor: '#a78bfaaa',
+                borderColor: '#a78bfa',
+                borderWidth: 1,
+                borderRadius: 4,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, max: 5, ticks: { callback: v => v + 'h' }, grid: { color: '#1a1a28' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // Son mission types
+    new Chart(document.getElementById('chart-son-types').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Watch', 'Build', 'Compress', 'Co-op/Boss'],
+            datasets: [{
+                data: [12, 16, 9, 5],
+                backgroundColor: ['#4a9effcc', '#10b981cc', '#f59e0bcc', '#8b5cf6cc'],
+                borderColor: '#12121a',
+                borderWidth: 3,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '60%',
+            plugins: {
+                legend: { position: 'right', labels: { usePointStyle: true, padding: 12, font: { size: 11 } } }
+            }
+        }
+    });
+
+    // Daughter mission types
+    new Chart(document.getElementById('chart-daughter-types').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Watch', 'Build/Artifact', 'Compress', 'Co-op/Boss'],
+            datasets: [{
+                data: [14, 22, 8, 8],
+                backgroundColor: ['#4a9effcc', '#10b981cc', '#f59e0bcc', '#8b5cf6cc'],
+                borderColor: '#12121a',
+                borderWidth: 3,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '60%',
+            plugins: {
+                legend: { position: 'right', labels: { usePointStyle: true, padding: 12, font: { size: 11 } } }
+            }
+        }
+    });
+</script>
+</body>
+</html>
